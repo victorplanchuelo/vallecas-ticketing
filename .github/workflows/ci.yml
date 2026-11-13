@@ -49,11 +49,14 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
+      - name: Check code style
+        run: vendor/bin/pint --test
+
       - name: Check platform requirements
         run: composer check-platform-reqs
 
-      - name: Check code style
-        run: vendor/bin/pint --test
+      - name: Generate application key
+        run: echo "APP_KEY=base64:$(openssl rand -base64 32)" >> "$GITHUB_ENV"
 
       - name: Run tests
         run: php artisan test
